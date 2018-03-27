@@ -1,9 +1,14 @@
 package com.example.thinkmobiles.bitcoinwalletsample.main;
 
+import android.Manifest;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -38,11 +43,14 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.ColorRes;
 import org.androidannotations.annotations.res.StringRes;
 
+
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.menu_main)
 public class MainActivity extends AppCompatActivity implements MainActivityContract.MainActivityView {
 
     private MainActivityContract.MainActivityPresenter presenter;
+
+    private static final int MY_PERMISSIONS_REQUEST_USE_CAMERA = 0;
 
     @ViewById
     protected FrameLayout flDownloadContent_LDP;
@@ -191,7 +199,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     @Override
     public void startScanQR() {
-        new IntentIntegrator(this).initiateScan();
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_CALENDAR)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, ask for it
+            ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_USE_CAMERA);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_USE_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    new IntentIntegrator(this).initiateScan();
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
     }
 
     @Override
