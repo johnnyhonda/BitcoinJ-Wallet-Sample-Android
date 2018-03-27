@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
+//apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 25
@@ -8,6 +8,7 @@ android {
         applicationId "com.example.thinkmobiles.bitcoinwalletsample"
         minSdkVersion 15
         targetSdkVersion 25
+        vectorDrawables.useSupportLibrary = true
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -34,7 +35,7 @@ android {
 
 dependencies {
     //Android support
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:design:25.4.0'
     //Android annotations
     annotationProcessor "org.androidannotations:androidannotations:4.2.0"
     compile "org.androidannotations:androidannotations-api:4.2.0"
@@ -45,6 +46,6 @@ dependencies {
     compile 'com.journeyapps:zxing-android-embedded:3.0.2@aar'
     compile 'com.google.zxing:core:3.2.0'
     //Logging
-    compile 'org.slf4j:slf4j-api:1.7.12'
+    compile 'org.slf4j:slf4j-api:1.7.20'
     compile 'org.slf4j:slf4j-simple:1.7.12'
 }
